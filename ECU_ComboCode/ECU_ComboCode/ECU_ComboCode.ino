@@ -35,13 +35,16 @@ void loop()
 
         unsigned int canId = CAN.getCanId();
 
-        Serial.println("-----------------------------");
-        Serial.print("Data from ID: 0x");
-        Serial.println(canId, HEX);
+        Serial.println("------------New Frame Recieved-----------------");
+        Serial.print("CANID: 0x");
+        Serial.print(canId, HEX);
+        Serial.print(" : DLC: ");
+        Serial.print(len, DEC);
+        Serial.print(" | DataBytes: ");
 
         for(int i = 0; i<len; i++)
         {
-            Serial.print(buf[i]);
+            Serial.print(buf[i], HEX);
             Serial.print("\t");            
         }
         Serial.println();
