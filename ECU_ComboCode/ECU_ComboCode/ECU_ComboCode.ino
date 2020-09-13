@@ -18,9 +18,20 @@ void setup()
     while (CAN_OK != CAN.begin(CAN_500KBPS))
     {
         Serial.println("CAN BUS Init Failed");
-        delay(100);
+        delay(5000);
     }
     Serial.println("CAN BUS  Init OK!");
+
+    //CAN Hardware filtering
+    CAN.init_Mask(0, 0, 0x7fe);                         // there are 2 mask in mcp2515, you need to set both of them
+    CAN.init_Mask(1, 0, 0x7fe);
+
+    CAN.init_Filt(0, 0, 0x7E8);                         // there are 6 filter in mcp2515
+    CAN.init_Filt(1, 0, 0x7E8);
+    CAN.init_Filt(2, 0, 0x7E8);
+    CAN.init_Filt(3, 0, 0x7E8);
+    CAN.init_Filt(4, 0, 0x7E8);
+    CAN.init_Filt(5, 0, 0x7E8);
 }
 
 
@@ -35,7 +46,7 @@ void loop()
 
         unsigned int canId = CAN.getCanId();
 
-        Serial.println("------------New Frame Recieved-----------------");
+        Serial.println("------------New CAN Frame Recieved-----------------");
         Serial.print("CANID: 0x");
         Serial.print(canId, HEX);
         Serial.print(" : DLC: ");
@@ -45,7 +56,7 @@ void loop()
         for(int i = 0; i<len; i++)
         {
             Serial.print(buf[i], HEX);
-            Serial.print("\t");            
+            Serial.print("   ");            
         }
         Serial.println();
     }
